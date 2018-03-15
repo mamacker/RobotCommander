@@ -1,5 +1,17 @@
 #!/usr/bin/python
-#from sense_hat import SenseHat
+
+# This is meant to be used with the "Robot Commander" Alexa Skill and
+# a Raspberry PI Sense Hat
+#
+# Try the Robot Commander Skill, then, get your Robot Commander ID by saying:
+# "Alexa, ask Robot Commander for my ID"
+# - or -
+# If you are already in Robot Commander say:
+# "What is my Commander ID"
+# Alexa will respond with a 6 character code.  Put that code in the
+# ID slot below, and what your robots progress in real time IOT.
+
+from sense_hat import SenseHat
 import requests
 import json
 import time
@@ -20,8 +32,9 @@ def get_board(id):
         last_request_time = time.time()
 
         r = requests.get('https://api.robotcommander.io/board?id=' + str(id))
-        if len(r.raw()) == 0:
+        if len(r.text) == 0:
             print "Invalid board id.  Say, 'Alexa, ask robot commander for my ID' use that string."
+            return None, None, None, False
         board_data = r.json()
         board_values = board_data["game"]
         json_data = json.loads(board_values)
