@@ -11,6 +11,13 @@
 # Alexa will respond with a 6 character code.  Put that code in the
 # ID slot below, and what your robots progress in real time IOT.
 
+ROBOT_COMMANDER_ID = 'qmda82'
+
+#Make it possible to find the library.
+import sys
+sys.path.insert(0, "../");
+sys.path.insert(0, "./");
+
 import time
 import robotio
 from sense_hat import SenseHat
@@ -18,7 +25,7 @@ sense = SenseHat()
 sense.clear()
 
 while True:
-    board, position, level, changed = robotio.get_board('qmda82')
+    board, position, level, changed = robotio.get_board(ROBOT_COMMANDER_ID)
     shift = 1
     if changed is True:
         sense.clear()

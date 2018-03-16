@@ -35,7 +35,13 @@ def get_board(id):
             print "Invalid board id.  Say, 'Alexa, ask robot commander for my ID' use that string."
             return None, None, None, False
 
-        board_data = r.json()
+        board_data = None
+        try:
+            board_data = r.json()
+        except:
+            print "Exception getting json."
+            return None, None, None, False
+
         board_values = board_data["game"]
         json_data = json.loads(board_values)
 
