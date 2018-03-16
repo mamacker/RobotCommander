@@ -35,5 +35,5 @@ Change the line:
 
 Where <b>qmda82</b> is my ID, put yours in there.
 
-The run the script:
+Then run the script:
 > nohup python ./sense-hat/robotio-sense.py
