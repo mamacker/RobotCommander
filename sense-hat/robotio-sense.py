@@ -11,71 +11,14 @@
 # Alexa will respond with a 6 character code.  Put that code in the
 # ID slot below, and what your robots progress in real time IOT.
 
-from sense_hat import SenseHat
-import requests
-import json
 import time
-
-last_request_time = 0
-board = None
-position = None
-max_size = 0
-
-def get_board(id):
-    global last_request_time
-    global board
-    global position
-    global max_size
-    changed = False
-    # Only fetch the board every three seconds
-    if time.time() - last_request_time > 3:
-        last_request_time = time.time()
-
-        r = requests.get('https://api.robotcommander.io/board?id=' + str(id))
-        if len(r.text) == 0:
-            print "Invalid board id.  Say, 'Alexa, ask robot commander for my ID' use that string."
-            return None, None, None, False
-        board_data = r.json()
-        board_values = board_data["game"]
-        json_data = json.loads(board_values)
-
-        board_raw = json_data["board"]
-        board = []
-
-        # First build out the max board.
-        for x in range(10):
-            board.append([])
-            for y in range(20):
-                board[x].append(0)
-
-        # Parse the data in the board return value.
-        for x in range(len(board_raw)):
-            if board_raw[x] is not None:
-                for y in range(len(board_raw[x])):
-                    if board_raw[x][y] is not None:
-                        if board_raw[x][y].get("safe") is not None:
-                                if board_raw[x][y].get("safe"):
-                                    if board_raw[x][y].get("visited") is True:
-                                        board[board_raw[x][y].get("x")][board_raw[x][y].get("y")] = 1
-                                else:
-                                    board[board_raw[x][y].get("x")][board_raw[x][y].get("y")] = -1
-                        if max_size < board_raw[x][y].get("y"):
-                            max_size = board_raw[x][y].get("y")
-
-        # Trim the board to the maximum y value seen.
-        for j in range(len(board)):
-            for k in range(max_size, 20):
-                board[j][k] = 1
-
-        position = [json_data["position"].get("x"), json_data["position"].get("y")];
-        changed = True
-    return (board, position, max_size, changed)
-
+import robotio
+from sense_hat import SenseHat
 sense = SenseHat()
 sense.clear()
 
 while True:
-    board, position, level, changed = get_board('qmda82')
+    board, position, level, changed = robotio.get_board('qmda82')
     shift = 1
     if changed is True:
         sense.clear()
