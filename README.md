@@ -31,7 +31,7 @@ Once installed, tell your robot to go forward, left or right. The little blue do
 Edit: ./sense-hat/robotio-sense.py
 
 Change the line:
->  board, position, level, changed = get_board('<b>qmda82</b>')
+>  ROBOT_COMMANDER_ID = 'qmda82'
 
 Where <b>qmda82</b> is my ID, put yours in there.
 
